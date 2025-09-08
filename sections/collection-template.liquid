@@ -1,0 +1,50 @@
+{% comment %}
+  Collection section for Shopify 2.0
+  This version renders all products in the store (collections['all'])
+{% endcomment %}
+
+{% assign collection = collections['all'] %}
+
+{% if collection != nil and collection.products.size > 0 %}
+{% assign count = 0 %}
+<section class="collection">
+  <div class="container">
+
+    <h2 class="collection__title">
+      {{ collection.title }}
+    </h2>
+
+    <div class="collection__wrapper">
+
+    {% for product in collection.products %}
+
+      {% if product.variants.size == 1 %}
+        
+        {% if count == 1 %}
+            {% render 'product-card', product: product, promo: true %}
+        {% else %}
+            {% render 'product-card', product: product %}
+        {% endif %}
+
+        {% assign count = count | plus: 1 %}
+        {% if count == 4 %}
+          {% break %}
+        {% endif %}
+
+      {% endif %}
+
+    {% endfor %}
+
+    </div>
+  </div>
+</section>
+{% else %}
+<p class="collection__empty">No products available.</p>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection Template",
+  "settings": []
+}
+{% endschema %}

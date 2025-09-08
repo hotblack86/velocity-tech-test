@@ -5,8 +5,23 @@ body {
   font-size: $font-body-size;
   line-height: $line-height-body;
   color: $color-text;
-  margin: 0;
   padding: 0;
+  box-sizing: inherit;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
 
 h1, h2, h3, h4, h5, h6 {

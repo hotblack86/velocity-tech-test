@@ -18,10 +18,15 @@
 </head>
 
 <body>
-  {% section 'header' %}
+  <div class="page-container">
+    {% section 'header' %}
 
-  {{ content_for_layout }}
+    <main>
+      {{ content_for_layout }}
+      
+    </main>
 
-  {% section 'footer' %}
+    {% section 'footer' %}
+  </div>
 </body>
 </html>

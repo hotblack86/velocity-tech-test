@@ -1,45 +1,127 @@
 @use 'variables' as *;
 
 /* Header */
-.site-header {
+
+.header {
   background: $color-header-bg;
-  padding: $spacing-base $spacing-lg;
-}
-
-.header-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.header-logo a {
-  font-size: 1.5rem;
   color: $color-white;
-  font-weight: 400;
-  letter-spacing: 20px;
-  line-height: 150%;
-  text-decoration: none;
-}
+  padding: $spacing-base $spacing-lg;
 
-.header-icons {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.header-icon svg {
-  width: 24px;
-  height: 24px;
+  &__logo a {
+    font-size: 1.5rem;
+    color: $color-white;
+    font-weight: 400;
+    letter-spacing: 20px;
+    line-height: 150%;
+    text-decoration: none;
+  }
+
+  &__icons {
+    display: flex;
+    gap: $spacing-md;
+    align-items: center;
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-white;
+    text-decoration: none;
+    position: relative;
+
+    svg {
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__cart-count {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    background: $color-cart-bg;
+    color: $color-black;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.1rem 0.4rem;
+    border-radius: 50%;
+  }
 }
 
 /* Footer */
 .footer {
   background: $color-header-bg;
-  padding: $spacing-base $spacing-lg;
   color: $color-white;
-  text-align: center;
+  padding: $spacing-base $spacing-lg;
 
-  a {
+  &__wrapper {
+    margin: 0 auto;
+    display: grid;
+    gap: $spacing-lg;
+  }
+
+  &__about { 
+    max-width: 480px;
+  }
+
+  &__bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-lg;
+  }
+
+  &__logo {
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 20px;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    margin-bottom: 0.5rem;
+  }
+
+  &__link {
     color: $color-white;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  @media (min-width: 769px) {
+    &__wrapper {
+      grid-template-columns: 4fr 1fr 1fr;
+      align-items: start;
+    }
+
+    &__bottom {
+      grid-column: span 2;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 }
+
+
+
