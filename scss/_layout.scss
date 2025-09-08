@@ -1,0 +1,45 @@
+@use 'variables' as *;
+
+/* Header */
+.site-header {
+  background: $color-header-bg;
+  padding: $spacing-base $spacing-lg;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo a {
+  font-size: 1.5rem;
+  color: $color-white;
+  font-weight: 400;
+  letter-spacing: 20px;
+  line-height: 150%;
+  text-decoration: none;
+}
+
+.header-icons {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.header-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Footer */
+.footer {
+  background: $color-header-bg;
+  padding: $spacing-base $spacing-lg;
+  color: $color-white;
+  text-align: center;
+
+  a {
+    color: $color-white;
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "velocity-tech-test",
+  "version": "1.0.0",
+  "description": "<img src=\"./velocity-tech-test.png\" alt=\"drawing\" width=\"100%\"/>",
+  "main": "index.js",
+  "scripts": {
+     "build:css": "sass scss/theme.scss assets/theme.scss.liquid --no-source-map --style=expanded",
+     "watch:css": "sass --watch scss/theme.scss:assets/theme.scss.liquid --style=expanded"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hotblack86/velocity-tech-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hotblack86/velocity-tech-test/issues"
+  },
+  "homepage": "https://github.com/hotblack86/velocity-tech-test#readme",
+  "devDependencies": {
+    "sass": "^1.92.0"
+  }
+}

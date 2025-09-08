@@ -1,0 +1,25 @@
+@use 'variables' as *;
+
+body {
+  font-family: $font-body;
+  font-size: $font-body-size;
+  line-height: $line-height-body;
+  color: $color-text;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-heading-weight;
+  line-height: $line-height-heading;
+  margin: 0 0 0.5em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
