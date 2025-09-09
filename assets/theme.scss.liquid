@@ -68,6 +68,9 @@ a:hover {
   text-decoration: none;
   position: relative;
 }
+.header__icon--cart {
+  cursor: pointer;
+}
 .header__icon svg {
   display: block;
   width: 24px;
@@ -399,7 +402,7 @@ a:hover {
 }
 .cart-drawer__item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 1rem;
   gap: 0.75rem;
 }
@@ -418,6 +421,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1rem;
 }
 .cart-drawer__item-title {
   font-size: 1rem;
@@ -437,25 +441,36 @@ a:hover {
 .cart-drawer__item-actions .cart-drawer__item-price {
   font-weight: 600;
 }
-.cart-drawer__item-actions-quantity {
+.cart-drawer__item-actions .cart-drawer__item-quantity {
   display: flex;
-  align-items: center;
-  gap: 0.25rem;
 }
-.cart-drawer__item-actions-quantity input {
-  width: 50px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0.25rem;
-}
-.cart-drawer__item-actions-quantity-btn {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
+.cart-drawer__item-actions .cart-drawer__item-quantity .cart-drawer__item-quantity-btn {
+  border: 1px solid gray;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
+  font-size: 0.875rem;
+}
+.cart-drawer__item-actions .cart-drawer__item-quantity .cart-drawer__item-quantity-btn--minus {
+  margin-right: 0.25rem;
+}
+.cart-drawer__item-actions .cart-drawer__item-quantity .cart-drawer__item-quantity-btn--plus {
+  margin-left: 0.25rem;
+}
+.cart-drawer__item-actions .cart-drawer__item-quantity .cart-drawer__item-quantity-input {
+  width: 2rem;
+  text-align: center;
+  border: 1px solid gray;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  /* Remove browser number arrows */
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: none;
+  /* Remove WebKit spin buttons */
+}
+.cart-drawer__item-actions .cart-drawer__item-quantity .cart-drawer__item-quantity-input::-webkit-inner-spin-button, .cart-drawer__item-actions .cart-drawer__item-quantity .cart-drawer__item-quantity-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .cart-drawer__item__remove {
   background: none;
@@ -463,6 +478,7 @@ a:hover {
   font-size: 1.2rem;
   cursor: pointer;
   margin-left: 0.5rem;
+  align-self: flex-start;
 }
 .cart-drawer__empty {
   text-align: center;

@@ -10,47 +10,14 @@
     <hr class="cart-drawer__divider">
 
     <div class="cart-drawer__content">
-      {% if cart.item_count > 0 %}
-        <ul class="cart-drawer__items">
-          {% for item in cart.items %}
-            <li class="cart-drawer__item" 
-                data-line="{{ forloop.index }}" 
-                data-variant-id="{{ item.variant.id }}">
-              
-              <div class="cart-item__image">
-                <img src="{{ item.image | image_url: width: 80 }}" alt="{{ item.title | escape }}">
-              </div>
-
-              <div class="cart-drawer__item-info">
-                <h3 class="cart-drawer__item-title">{{ item.product.title }}</h3>
-                <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
-
-                <div class="cart-drawer__item-actions">
-                  <span class="cart-drawer__item-price">{{ item.final_line_price | money }}</span>
-
-                  <div class="cart-drawer__item-quantity">
-                    <button type="button" class="cart-drawer__item-quantity-btn cart-drawer__item-quantity-btn--minus">-</button>
-                    <input type="number" value="{{ item.quantity }}" min="1" 
-                           class="cart-drawer__item-quantity-input" 
-                           data-variant-id="{{ item.variant.id }}">
-                    <button type="button" class="cart-drawer__item-quantity-btn cart-drawer__item-quantity-btn--plus">+</button>
-                  </div>
-                </div>
-              </div>
-
-              <button type="button" class="cart-drawer__item__remove">🗑</button>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="cart-drawer__empty">Your cart is empty.</p>
-      {% endif %}
+      <ul class="cart-drawer__items"></ul>
+      <p class="cart-drawer__empty">Your cart is empty.</p>
     </div>
 
     <footer class="cart-drawer__footer">
       <div class="cart-drawer__subtotal">
-        <span class="cart__total-items">{{ cart.item_count }} items</span>
-        <span class="cart__total-price">{{ cart.total_price | money }}</span>
+        <span class="cart__total-items"></span>
+        <span class="cart__total-price"></span>
       </div>
       <div class="cart-drawer__reward">
         Earn 20 points with this order

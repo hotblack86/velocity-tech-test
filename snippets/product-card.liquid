@@ -50,7 +50,7 @@
 
   <!-- Actions: Quantity selector left, Price right -->
   <div class="product-card__actions">
-    <div class="product-card__quantity" data-cart-trigger>
+    <div class="product-card__quantity" data-cart-trigger data-variant-id="{{ product.selected_or_first_available_variant.id }}">
       <button type="button" class="product-card__quantity-btn product-card__quantity-btn--minus">-</button>
       <input 
         type="number" 
@@ -58,7 +58,7 @@
         min="1" 
         class="product-card__quantity-input"
         data-collection-quantity
-        data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+        
       >
       <button type="button" class="product-card__quantity-btn product-card__quantity-btn--plus">+</button>
     </div>
@@ -66,6 +66,11 @@
     <div class="product-card__price">
       {{ product.price | money }}
     </div>
+
+    <!-- Add to Cart Button -->
+    <button type="button" class="product-card__add-to-cart-btn" aria-label="Add to cart" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+        Add to Cart
+    </button>
   </div>
 
 </product-card>

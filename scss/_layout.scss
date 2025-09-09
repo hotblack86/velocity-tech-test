@@ -36,6 +36,10 @@
     text-decoration: none;
     position: relative;
 
+    &--cart {
+      cursor: pointer;
+    }
+
     svg {
       display: block;
       width: 24px;
