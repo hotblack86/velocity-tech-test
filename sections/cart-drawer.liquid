@@ -1,0 +1,62 @@
+<!-- sections/cart-drawer.liquid -->
+
+<cart-drawer id="cart-drawer" class="cart-drawer" aria-hidden="true">
+  <div class="cart-drawer__overlay"></div>
+
+  <div class="cart-drawer__panel">
+    <header class="cart-drawer__header">
+      <h2 class="cart-drawer__title">Your Basket</h2>
+      <button class="cart-drawer__clear-all" aria-label="Clear All"><span>Clear All</span></button>
+    </header>
+
+    <div class="cart-drawer__content">
+      {% if cart.item_count > 0 %}
+        <ul class="cart-drawer__items">
+          {% for item in cart.items %}
+            <li class="cart-drawer__item">
+              <img 
+                src="{{ item.image | image_url: width: 100 }}" 
+                alt="{{ item.image.alt | escape }}" 
+                class="cart-drawer__item-image"
+                loading="lazy">
+
+              <div class="cart-drawer__item-info">
+                <h3 class="cart-drawer__item-title">{{ item.product.title }}</h3>
+                <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
+
+                <div class="cart-drawer__item-actions">
+                  <input 
+                    type="number" 
+                    value="{{ item.quantity }}" 
+                    min="0" 
+                    data-line="{{ forloop.index }}" 
+                    class="cart-drawer__item-quantity">
+                  <span class="cart-drawer__item-price">{{ item.final_line_price | money }}</span>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="cart-drawer__empty">Your cart is empty.</p>
+      {% endif %}
+    </div>
+
+    <footer class="cart-drawer__footer">
+      <div class="cart-drawer__subtotal">
+        <span class="cart__total-items">{{ cart.item_count }} items</span>
+        <span class="cart__total-price">{{ cart.total_price | money }}</span>
+      </div>
+      <button class="cart-drawer__checkout-btn" aria-label="Checkout">
+        <a href="{{ routes.cart_url }}">Checkout Now</a>
+      </button>      
+    </footer>
+  </div>
+</cart-drawer>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "settings": []
+}
+{% endschema %}
