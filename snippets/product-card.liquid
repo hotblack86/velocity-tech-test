@@ -52,7 +52,14 @@
   <div class="product-card__actions">
     <div class="product-card__quantity" data-cart-trigger>
       <button type="button" class="product-card__quantity-btn product-card__quantity-btn--minus">-</button>
-      <input type="number" value="0" min="0" class="product-card__quantity-input">
+      <input 
+        type="number" 
+        value="1" 
+        min="1" 
+        class="product-card__quantity-input"
+        data-collection-quantity
+        data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+      >
       <button type="button" class="product-card__quantity-btn product-card__quantity-btn--plus">+</button>
     </div>
 

@@ -1,24 +1,24 @@
 class CartDrawer extends HTMLElement {
     constructor() {
         super();
+
+        this.openHandler = this.open.bind(this);
+        this.closeHandler = this.close.bind(this);
     }
 
     connectedCallback() {
         this.overlay = this.querySelector('.cart-drawer__overlay');
-        this.overlay.addEventListener('click', () => this.close());
+        this.overlay.addEventListener('click', () => this.closeHandler());
 
-        const triggers = document.querySelectorAll('[data-cart-trigger]');
-        triggers.forEach(trigger => {
-            trigger.addEventListener('click', () => this.open());
+        this.triggers = document.querySelectorAll('[data-cart-trigger]');
+        this.triggers.forEach(trigger => {
+            trigger.addEventListener('click', () => this.openHandler());
         });
     }
 
     disconnectedCallback() {
-        document.querySelectorAll('[data-cart-trigger]').forEach((button) => {
-            button.removeEventListener('click', () => this.open());
-        });
-
         this.overlay.removeEventListener('click', () => this.close());
+        this.triggers.forEach(trigger => trigger.removeEventListener('click', this.openHandler));
     }
 
     open() {
