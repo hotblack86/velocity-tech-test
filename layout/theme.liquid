@@ -13,6 +13,10 @@
 
   {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
 
+  <script src="{{ 'cart-drawer.js' | asset_url }}" type="module"></script>
+
+
+
 
   {{ content_for_header }}
 </head>

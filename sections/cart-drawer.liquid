@@ -5,36 +5,40 @@
 
   <div class="cart-drawer__panel">
     <header class="cart-drawer__header">
-      <h2 class="cart-drawer__title">Your Basket</h2>
-      <button class="cart-drawer__clear-all" aria-label="Clear All"><span>Clear All</span></button>
+      <h2 class="cart-drawer__header-title">Your Basket</h2>
+      <button class="cart-drawer__header-clear-all" aria-label="Clear All"><span>Clear All</span></button>
     </header>
+
+
+    <hr class="cart-drawer__divider">
 
     <div class="cart-drawer__content">
       {% if cart.item_count > 0 %}
         <ul class="cart-drawer__items">
           {% for item in cart.items %}
             <li class="cart-drawer__item">
-              <img 
-                src="{{ item.image | image_url: width: 100 }}" 
-                alt="{{ item.image.alt | escape }}" 
-                class="cart-drawer__item-image"
-                loading="lazy">
+              <div class="cart-item__image">
+                <img src="{{ item.image | image_url: width: 80 }}" alt="{{ item.title | escape }}">
+              </div>
 
               <div class="cart-drawer__item-info">
                 <h3 class="cart-drawer__item-title">{{ item.product.title }}</h3>
                 <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
 
                 <div class="cart-drawer__item-actions">
-                  <input 
-                    type="number" 
-                    value="{{ item.quantity }}" 
-                    min="0" 
-                    data-line="{{ forloop.index }}" 
-                    class="cart-drawer__item-quantity">
-                  <span class="cart-drawer__item-price">{{ item.final_line_price | money }}</span>
+                    <span class="cart-drawer__item-price">{{ item.final_line_price | money }}</span>
+                        <div class="cart-drawer__item-quantity">
+                            <button class="cart-drawer__item-quantity-btn cart-drawer__item-quantity-btn--minus">-</button>
+                            <input type="number" value="{{ item.quantity }}" min="1" class="cart-drawer__item-quantity-input">
+                            <button class="cart-drawer__item-quantity-btn cart-drawer__item-quantity-btn--plus">+</button>
+                        </div>
+                  
                 </div>
               </div>
+
+              <button class="cart-drawer__item__remove">🗑</button>
             </li>
+ 
           {% endfor %}
         </ul>
       {% else %}
@@ -47,9 +51,11 @@
         <span class="cart__total-items">{{ cart.item_count }} items</span>
         <span class="cart__total-price">{{ cart.total_price | money }}</span>
       </div>
-      <button class="cart-drawer__checkout-btn" aria-label="Checkout">
-        <a href="{{ routes.cart_url }}">Checkout Now</a>
-      </button>      
+      <div class="cart-drawer__reward">
+        Earn 20 points with this order
+      </div>
+      <a href="{{ routes.cart_url }}" class="cart-drawer__checkout-btn">Checkout Now</a>
+      
     </footer>
   </div>
 </cart-drawer>
@@ -60,3 +66,4 @@
   "settings": []
 }
 {% endschema %}
+
