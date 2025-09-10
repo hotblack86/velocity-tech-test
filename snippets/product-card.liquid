@@ -33,10 +33,14 @@
   <!-- Product image (non-clickable) -->
   {% if product.featured_image %}
     <img 
-      src="{{ product.featured_image | image_url: width: 600 }}" 
+      src="{{ product.featured_image | image_url: width: 300 }}" 
       alt="{{ product.featured_image.alt | escape }}" 
       class="product-card__image"
       loading="lazy">
+  {% else %}
+    <div class="placeholder-svg__wrapper product-card__image">
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
   {% endif %}
 
   <!-- Product title -->

@@ -9,19 +9,6 @@
   cursor: pointer;
 }
 
-/* Cart Count Badge */
-.cart-count {
-  position: absolute;
-  top: 9px;
-  right: 18px;
-  background: $color-cart-bg;
-  color: $color-black;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 0.1rem 0.4rem;
-  border-radius: 50%;
-}
-
 /* Modal Cart */
 .modal-cart {
   position: fixed;
