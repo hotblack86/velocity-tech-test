@@ -42,7 +42,6 @@
   <!-- Product title -->
   <div class="product-card__info">
     <h3 class="product-card__title">{{ product.title }}</h3>
-    <span>{{ product.options }}</span>
   </div>
 
   <!-- Dividing line -->
@@ -67,10 +66,12 @@
       {{ product.price | money }}
     </div>
 
-    <!-- Add to Cart Button -->
+    
+  </div>
+
+  <!-- Add to Cart Button -->
     <button type="button" class="product-card__add-to-cart-btn" aria-label="Add to cart" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
         Add to Cart
     </button>
-  </div>
 
 </product-card>
