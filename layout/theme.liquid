@@ -15,21 +15,16 @@
 
   <script src="{{ 'cart-drawer.js' | asset_url }}" type="module"></script>
 
-
-
-
   {{ content_for_header }}
 </head>
 
 <body>
   <div class="page-container">
     {% section 'header' %}
-
     <main>
       {{ content_for_layout }}
       
     </main>
-
     {% section 'footer' %}
     {% section 'cart-drawer' %}
   </div>

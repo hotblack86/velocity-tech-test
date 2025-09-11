@@ -145,28 +145,6 @@ a:hover {
   }
 }
 
-/* Buttons */
-.button {
-  background-color: #1F3666;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Modal Cart */
-.modal-cart {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 400px;
-  height: 100%;
-  background: #fff;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-  display: none;
-  z-index: 1000;
-}
-
 /* Collection */
 .collection {
   padding: 2rem 1rem;
@@ -194,7 +172,9 @@ a:hover {
   }
 }
 
-/* Product Card */
+/* ===============================
+   Product Card
+   =============================== */
 .product-card {
   display: flex;
   flex-direction: column;
@@ -204,7 +184,8 @@ a:hover {
   background: #fff;
   border-radius: 0.5rem;
   padding: 1rem;
-  box-shadow: 0px 0px 15px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.1);
+  /* --- Promos & Labels --- */
 }
 .product-card__promos {
   display: flex;
@@ -215,10 +196,13 @@ a:hover {
 .product-card__labels {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.product-card__labels .product-card__label {
-  background-color: #B2DAE0;
+.product-card__label {
+  background-color: #b2dae0;
   color: black;
   font-size: 0.75rem;
   font-weight: 700;
@@ -226,45 +210,81 @@ a:hover {
   border-radius: 0.25rem;
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 0.25rem;
 }
-.product-card__labels .product-card__label--sale {
-  background-color: #FACDCE;
+.product-card__label--sale {
+  background-color: #facdce;
 }
-.product-card__labels .product-card__label-icon {
+.product-card__label-icon {
   width: 12px;
   height: 12px;
+  flex-shrink: 0;
+}
+.product-card__label-text {
+  line-height: 1.2;
+}
+.product-card {
+  /* --- Wishlist --- */
 }
 .product-card__wishlist {
   display: flex;
   align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
 }
-.product-card__wishlist svg {
+.product-card__wishlist-icon {
   width: 20px;
   height: 20px;
+}
+.product-card {
+  /* --- Image --- */
+}
+.product-card__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+.product-card__image-wrapper:hover .product-card__image {
+  transform: scale(1.05);
 }
 .product-card__image {
   display: block;
   width: 100%;
   height: auto;
-  max-width: 100%;
   object-fit: cover;
   aspect-ratio: 1/1;
-  margin-bottom: 0.75rem;
-  border-radius: 0.25rem;
+  transition: transform 0.6s ease;
+}
+.product-card {
+  /* --- Info --- */
 }
 .product-card__info {
   margin-bottom: 1.5rem;
 }
-.product-card__info .product-card__title {
-  font-size: 16px;
+.product-card__title {
+  font-size: 1rem;
   font-weight: 700;
   margin: 0;
 }
+.product-card__title .product-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+.product-card__title .product-card__link:hover, .product-card__title .product-card__link:focus {
+  text-decoration: underline;
+}
+.product-card {
+  /* --- Divider --- */
+}
 .product-card__divider {
   border: none;
-  border-top: 1px solid #DEDEDE;
+  border-top: 1px solid #dedede;
   margin: auto 0 2rem;
+}
+.product-card {
+  /* --- Actions --- */
 }
 .product-card__actions {
   display: flex;
@@ -272,10 +292,13 @@ a:hover {
   align-items: center;
   margin-bottom: 1rem;
 }
-.product-card__actions .product-card__quantity {
+.product-card {
+  /* Quantity controls */
+}
+.product-card__quantity {
   display: flex;
 }
-.product-card__actions .product-card__quantity .product-card__quantity-btn {
+.product-card__quantity-btn {
   border: 1px solid gray;
   width: 2rem;
   height: 2rem;
@@ -285,17 +308,17 @@ a:hover {
   justify-content: center;
   cursor: pointer;
   font-size: 1rem;
-  background-color: #E9ECF0;
+  background-color: #e9ecf0;
   line-height: 1;
   padding: 0;
 }
-.product-card__actions .product-card__quantity .product-card__quantity-btn--minus {
+.product-card__quantity-btn--minus {
   margin-right: 0.25rem;
 }
-.product-card__actions .product-card__quantity .product-card__quantity-btn--plus {
+.product-card__quantity-btn--plus {
   margin-left: 0.25rem;
 }
-.product-card__actions .product-card__quantity .product-card__quantity-input {
+.product-card__quantity-input {
   width: 2rem;
   text-align: center;
   border: 1px solid gray;
@@ -305,29 +328,54 @@ a:hover {
   -moz-appearance: textfield;
   -webkit-appearance: none;
   appearance: none;
-  /* Remove WebKit spin buttons */
 }
-.product-card__actions .product-card__quantity .product-card__quantity-input::-webkit-inner-spin-button, .product-card__actions .product-card__quantity .product-card__quantity-input::-webkit-outer-spin-button {
+.product-card__quantity-input::-webkit-inner-spin-button, .product-card__quantity-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.product-card__actions .product-card__price {
-  font-weight: bold;
-  font-size: 1rem;
+.product-card {
+  /* Price */
 }
-.product-card .product-card__add-to-cart-btn {
+.product-card__price {
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.product-card__price--compare {
+  text-decoration: line-through;
+  font-weight: normal;
+  font-size: 0.875rem;
+  color: #8f9296;
+}
+.product-card__price--current {
+  color: #1F3666;
+}
+.product-card {
+  /* --- Add to Cart --- */
+}
+.product-card__add-to-cart-btn {
   display: block;
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  background: #1f3666;
+  background: #1F3666;
   color: #fff;
   padding: 0.75rem 0;
   font-weight: 600;
   border-radius: 30px;
-  text-decoration: none;
   border: none;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+.product-card__add-to-cart-btn:hover, .product-card__add-to-cart-btn:focus {
+  background: #1F3666;
+}
+.product-card__add-to-cart-btn:disabled, .product-card__add-to-cart-btn[aria-disabled=true] {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 /* Cart Drawer */
@@ -555,7 +603,7 @@ a:hover {
 }
 .cart-drawer__checkout-btn:hover {
   text-decoration: none;
-  background: #1f3666;
+  background: #1F3666;
 }
 
 .cart-drawer.is-empty .cart-drawer__header-clear-all,

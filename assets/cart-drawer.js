@@ -1,52 +1,63 @@
 class CartDrawer extends HTMLElement {
+  // ---------------- Private Fields ----------------
+  #overlay;
+  #cartIcon;
+  #clearAllBtn;
+  #itemsContainer;
+  #totalItems;
+  #totalPrice;
+  #headerCartCount;
+  #emptyState;
+
+  #openHandler;
+  #closeHandler;
+  #clearAllHandler;
+  #handleCartItemAction;
+
   constructor() {
     super();
-    this.openHandler = this.open.bind(this);
-    this.closeHandler = this.close.bind(this);
-    this.handleCartItemAction = this.handleCartItemAction.bind(this);
+    this.#openHandler = this.open.bind(this);
+    this.#closeHandler = this.close.bind(this);
+    this.#clearAllHandler = this.clearAll.bind(this);
+    this.#handleCartItemAction = this.handleCartItemAction.bind(this);
   }
 
   connectedCallback() {
-    // Overlay click
-    this.overlay = this.querySelector('.cart-drawer__overlay');
-    if (this.overlay) this.overlay.addEventListener('click', this.closeHandler);
+    // ---------------- Cache DOM Elements ----------------
+    this.#overlay = this.querySelector('.cart-drawer__overlay');
+    this.#cartIcon = document.querySelector('.header__icon--cart');
+    this.#clearAllBtn = this.querySelector('.cart-drawer__header-clear-all');
+    this.#itemsContainer = this.querySelector('.cart-drawer__items');
+    this.#totalItems = this.querySelector('.cart__total-items');
+    this.#totalPrice = this.querySelector('.cart__total-price');
+    this.#headerCartCount = document.querySelector('.header__cart-count');
+    this.#emptyState = this.querySelector('.cart-drawer__empty');
 
-    // Cart icon click
-    this.cartIcon = document.querySelector('.header__icon--cart');
-    if (this.cartIcon) this.cartIcon.addEventListener('click', this.openHandler);
+    // ---------------- Bind Events ----------------
+    if (this.#overlay) this.#overlay.addEventListener('click', this.#closeHandler);
+    if (this.#cartIcon) this.#cartIcon.addEventListener('click', this.#openHandler);
+    if (this.#clearAllBtn) this.#clearAllBtn.addEventListener('click', this.#clearAllHandler);
+    if (this.#itemsContainer) this.#itemsContainer.addEventListener('click', this.#handleCartItemAction);
 
-    // Clear all button
-    this.clearAllBtn = this.querySelector('.cart-drawer__header-clear-all');
-    if (this.clearAllBtn) this.clearAllBtn.addEventListener('click', () => this.clearAll());
+    // ---------------- Setup Collection & ATC ----------------
+    this.#setupCollectionQuantity();
+    this.#setupAddToCartButton();
 
-    // Collection qty controls
-    this.setupCollectionQuantity();
-
-    // Add to cart
-    this.setupAddToCartButton();
-
-    // Event delegation for all cart item actions
-    this.itemsContainer = this.querySelector('.cart-drawer__items');
-    if (this.itemsContainer) {
-      this.itemsContainer.addEventListener('click', this.handleCartItemAction);
-    }
-
-    // Initial render
+    // ---------------- Initial Cart Load ----------------
     this.refreshCart();
   }
 
   disconnectedCallback() {
-    if (this.overlay) this.overlay.removeEventListener('click', this.closeHandler);
-    if (this.cartIcon) this.cartIcon.removeEventListener('click', this.openHandler);
-    if (this.clearAllBtn) this.clearAllBtn.removeEventListener('click', () => this.clearAll());
-    if (this.itemsContainer) this.itemsContainer.removeEventListener('click', this.handleCartItemAction);
+    if (this.#overlay) this.#overlay.removeEventListener('click', this.#closeHandler);
+    if (this.#cartIcon) this.#cartIcon.removeEventListener('click', this.#openHandler);
+    if (this.#clearAllBtn) this.#clearAllBtn.removeEventListener('click', this.#clearAllHandler);
+    if (this.#itemsContainer) this.#itemsContainer.removeEventListener('click', this.#handleCartItemAction);
   }
 
-  // ---------------- Drawer Open/Close ----------------
-  async open() {
+  // ---------------- Public Methods ----------------
+  open() {
     this.setAttribute('aria-hidden', false);
     this.classList.add('is-active');
-    await this.refreshCart();
   }
 
   close() {
@@ -54,126 +65,92 @@ class CartDrawer extends HTMLElement {
     this.classList.remove('is-active');
   }
 
-
-  // ---------------- AJAX Cart ----------------
-  async refreshCart() {
-    try {
-      const res = await fetch('/cart.js');
-      const cart = await res.json();
-
-      // Totals
-      const totalItems = this.querySelector('.cart__total-items');
-      const totalPrice = this.querySelector('.cart__total-price');
-
-      if (totalItems) {
-        totalItems.textContent = `${cart.item_count} item${cart.item_count !== 1 ? 's' : ''}`;
-      }
-      if (totalPrice) {
-        totalPrice.textContent = (cart.total_price / 100).toLocaleString('en-GB', {
-          style: 'currency',
-          currency: 'GBP'
-        });
-      }
-
-      const headerCartCount = document.querySelector('.header__cart-count');
-      if (headerCartCount) {
-        const count = cart.item_count;
-        headerCartCount.style.display = count > 0 ? 'inline-block' : 'none';
-        headerCartCount.textContent = count;
-      }
-
-      if (!this.itemsContainer) return;
-      this.itemsContainer.innerHTML = '';
-
-      if (cart.items.length === 0) {
-        this.classList.add('is-empty');
-        return;
-      }
-      this.classList.remove('is-empty');
-
-      // Batch DOM updates with a fragment
-      const fragment = document.createDocumentFragment();
-      cart.items.forEach((item, index) => {
-        fragment.appendChild(this.buildCartItem(item, index));
-      });
-
-      this.itemsContainer.appendChild(fragment);
-    } catch (error) {
-      console.error('Error refreshing cart:', error);
-    }
-  }
-
   async addToCart(variantId, quantity) {
-    try {
-      await fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: variantId, quantity })
-      });
-
-      await this.open();
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-    }
+    await this.#cartRequest('/cart/add.js', { id: variantId, quantity });
+    const cart = await this.#cartRequest('/cart.js');
+    this.#updateUI(cart);
+    this.open();
   }
 
   async clearAll() {
-    try {
-      await fetch('/cart/clear.js', { method: 'POST' });
-      await this.refreshCart();
-    } catch (error) {
-      console.error('Error clearing cart:', error);
-    }
+    await this.#cartRequest('/cart/clear.js', {});
+    this.refreshCart();
   }
 
   async updateCartLine(line, quantity) {
+    await this.#cartRequest('/cart/change.js', { line, quantity });
+    this.refreshCart();
+  }
+
+  async refreshCart() {
+    const cart = await this.#cartRequest('/cart.js');
+    this.#updateUI(cart);
+  }
+
+  // ---------------- Private Methods ----------------
+  async #cartRequest(endpoint, payload = null) {
     try {
-      await fetch('/cart/change.js', {
-        method: 'POST',
+      const options = {
+        method: payload ? 'POST' : 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ line, quantity })
-      });
-      await this.refreshCart();
+        body: payload ? JSON.stringify(payload) : undefined
+      };
+      const res = await fetch(endpoint, options);
+      return await res.json();
     } catch (error) {
-      console.error('Error updating cart line:', error);
-      await this.refreshCart();
+      console.error(`Cart API error (${endpoint}):`, error);
+      throw error;
     }
   }
 
-
-  // ---------------- Optimistic Updates ----------------
-  updateSubtotal({ priceDelta = 0, itemsDelta = 0 }) {
-    const totalPriceEl = this.querySelector('.cart__total-price');
-    const totalItemsEl = this.querySelector('.cart__total-items');
-
-    if (!totalPriceEl || !totalItemsEl) return;
-
-    let currentPrice = parseFloat(totalPriceEl.textContent.replace(/[£,]/g, '')) * 100 || 0;
-    let currentItems = parseInt(totalItemsEl.textContent) || 0;
-
-    currentPrice += priceDelta;
-    currentItems += itemsDelta;
-
-    totalPriceEl.textContent = (currentPrice / 100).toLocaleString('en-GB', {
-      style: 'currency',
-      currency: 'GBP'
-    });
-    totalItemsEl.textContent = `${currentItems} item${currentItems !== 1 ? 's' : ''}`;
+  #updateUI(cart) {
+    this.#updateTotals(cart);
+    this.#updateHeaderCount(cart);
+    this.#renderItems(cart);
   }
 
-  updateLinePrice(lineItemEl, unitPrice, newQty) {
-    const priceEl = lineItemEl.querySelector('.cart-drawer__item-price');
-    if (!priceEl) return;
-
-    const newLinePrice = unitPrice * newQty;
-    priceEl.textContent = (newLinePrice / 100).toLocaleString('en-GB', {
-      style: 'currency',
-      currency: 'GBP'
-    });
+  #updateTotals(cart) {
+    if (this.#totalItems) {
+      this.#totalItems.textContent = `${cart.item_count} item${cart.item_count !== 1 ? 's' : ''}`;
+    }
+    if (this.#totalPrice) {
+      this.#totalPrice.textContent = (cart.total_price / 100).toLocaleString('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+      });
+    }
   }
 
-  // ---------------- Build Item Markup ----------------
-  buildCartItem(item, index) {
+  #updateHeaderCount(cart) {
+    if (this.#headerCartCount) {
+      const count = cart.item_count;
+      this.#headerCartCount.style.display = count > 0 ? 'inline-block' : 'none';
+      this.#headerCartCount.textContent = count;
+    }
+  }
+
+  #renderItems(cart) {
+    if (!this.#itemsContainer) return;
+
+    this.#itemsContainer.innerHTML = '';
+
+    if (cart.items.length === 0) {
+      this.classList.add('is-empty');
+      if (this.#emptyState) this.#emptyState.style.display = 'block';
+      return;
+    }
+
+    this.classList.remove('is-empty');
+    if (this.#emptyState) this.#emptyState.style.display = 'none';
+
+    const fragment = document.createDocumentFragment();
+    cart.items.forEach((item, index) => {
+      fragment.appendChild(this.#buildCartItem(item, index));
+    });
+    this.#itemsContainer.replaceChildren(fragment);
+  }
+
+  #buildCartItem(item, index) {
     const li = document.createElement('li');
     li.className = 'cart-drawer__item';
     li.dataset.line = index + 1;
@@ -194,8 +171,7 @@ class CartDrawer extends HTMLElement {
         </span>
         <div class="cart-drawer__item-quantity">
           <button type="button" class="cart-drawer__item-quantity-btn" data-action="minus">-</button>
-          <input type="number" value="${item.quantity}" min="1"
-                  class="cart-drawer__item-quantity-input">
+          <input type="number" value="${item.quantity}" min="1" class="cart-drawer__item-quantity-input">
           <button type="button" class="cart-drawer__item-quantity-btn" data-action="plus">+</button>
         </div>
       </div>
@@ -203,13 +179,8 @@ class CartDrawer extends HTMLElement {
     return li;
   }
 
-  
-
-  // ---------------- Collection Quantity ----------------
-  setupCollectionQuantity() {
+  #setupCollectionQuantity() {
     const quantityContainers = document.querySelectorAll('.product-card__quantity');
-    if (!quantityContainers.length) return;
-
     quantityContainers.forEach(container => {
       const input = container.querySelector('.product-card__quantity-input');
       const plus = container.querySelector('.product-card__quantity-btn--plus');
@@ -217,31 +188,19 @@ class CartDrawer extends HTMLElement {
 
       if (!input || !plus || !minus) return;
 
-      input.addEventListener('change', () => {
-        input.value = Math.max(1, parseInt(input.value));
-      });
-
-      plus.addEventListener('click', () => {
-        input.value = parseInt(input.value) + 1;
-      });
-
-      minus.addEventListener('click', () => {
-        input.value = Math.max(1, parseInt(input.value) - 1);
-      });
+      input.addEventListener('change', () => input.value = Math.max(1, parseInt(input.value)));
+      plus.addEventListener('click', () => input.value = parseInt(input.value) + 1);
+      minus.addEventListener('click', () => input.value = Math.max(1, parseInt(input.value) - 1));
     });
   }
 
-
-  setupAddToCartButton() {
+  #setupAddToCartButton() {
     const addButtons = document.querySelectorAll('.product-card__add-to-cart-btn');
-    if (!addButtons.length) return;
-
     addButtons.forEach(button => {
       button.addEventListener('click', async () => {
         const productCard = button.closest('.product-card');
         const quantityContainer = productCard.querySelector('.product-card__quantity');
         const input = quantityContainer?.querySelector('.product-card__quantity-input');
-
         if (!quantityContainer || !input) return;
 
         const variantId = quantityContainer.dataset.variantId;
@@ -249,14 +208,11 @@ class CartDrawer extends HTMLElement {
 
         await this.addToCart(variantId, quantity);
 
-        // Reset qty input back to 1
         input.value = 1;
       });
     });
   }
 
-
-  // ---------------- Event Delegation for Items ----------------
   async handleCartItemAction(e) {
     const btn = e.target.closest('button');
     if (!btn) return;
@@ -265,34 +221,15 @@ class CartDrawer extends HTMLElement {
     if (!li) return;
 
     const input = li.querySelector('.cart-drawer__item-quantity-input');
-    const unitPrice = parseInt(li.dataset.price);
     const line = li.dataset.line;
-    const currentQty = parseInt(input.value);
+    let quantity = parseInt(input.value);
 
-    if (btn.classList.contains('cart-drawer__item-remove')) {
-      this.updateSubtotal({ priceDelta: -(unitPrice * currentQty), itemsDelta: -currentQty });
-      this.updateLinePrice(li, unitPrice, 0);
-      await this.updateCartLine(line, 0);
-    }
+    if (btn.classList.contains('cart-drawer__item-remove')) quantity = 0;
+    else if (btn.dataset.action === 'minus') quantity = Math.max(1, quantity - 1);
+    else if (btn.dataset.action === 'plus') quantity += 1;
 
-    if (btn.dataset.action === 'minus') {
-      const newQty = Math.max(1, currentQty - 1);
-      this.updateSubtotal({ priceDelta: -unitPrice, itemsDelta: -1 });
-      this.updateLinePrice(li, unitPrice, newQty);
-      input.value = newQty;
-      await this.updateCartLine(line, newQty);
-    }
-
-    if (btn.dataset.action === 'plus') {
-      const newQty = currentQty + 1;
-      this.updateSubtotal({ priceDelta: unitPrice, itemsDelta: 1 });
-      this.updateLinePrice(li, unitPrice, newQty);
-      input.value = newQty;
-      await this.updateCartLine(line, newQty);
-    }
+    await this.updateCartLine(line, quantity);
   }
-
-  
 }
 
 customElements.define('cart-drawer', CartDrawer);

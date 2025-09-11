@@ -1,18 +1,20 @@
 @use 'variables' as *;
 
-/* Product Card */
+/* ===============================
+   Product Card
+   =============================== */
 .product-card {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  background: #fff;
+  background: $color-white;
   border-radius: 0.5rem;
   padding: 1rem;
-  box-shadow: 0px 0px 15px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.1);
 
-
+  /* --- Promos & Labels --- */
   &__promos {
     display: flex;
     justify-content: space-between;
@@ -23,37 +25,61 @@
   &__labels {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__label {
+    background-color: #b2dae0;
+    color: black;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
     gap: 0.25rem;
 
-    .product-card__label {
-      background-color: #B2DAE0;
-      color: black;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.125rem 0.5rem;
-      border-radius: 0.25rem;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-
-      &--sale {
-        background-color: #FACDCE;
-      }
-
-      &-icon {
-        width: 12px;
-        height: 12px;
-      }
+    &--sale {
+      background-color: #facdce;
     }
   }
 
+  &__label-icon {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  &__label-text {
+    line-height: 1.2;
+  }
+
+  /* --- Wishlist --- */
   &__wishlist {
     display: flex;
     align-items: center;
+    background: none;
+    border: none;
+    padding: 0;
+  }
 
-    svg {
-      width: 20px;
-      height: 20px;
+  &__wishlist-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* --- Image --- */
+  &__image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.25rem;
+    margin-bottom: 0.75rem;
+
+    &:hover .product-card__image {
+      transform: scale(1.05);
     }
   }
 
@@ -61,95 +87,139 @@
     display: block;
     width: 100%;
     height: auto;
-    max-width: 100%;
     object-fit: cover;
     aspect-ratio: 1 / 1;
-    margin-bottom: 0.75rem;
-    border-radius: 0.25rem;
+    transition: transform 0.6s ease;
   }
 
+  /* --- Info --- */
   &__info {
     margin-bottom: 1.5rem;
+  }
 
-    .product-card__title {
-      font-size: 16px;
-      font-weight: 700;
-      margin: 0;
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+
+    .product-card__link {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
     }
   }
 
+  /* --- Divider --- */
   &__divider {
     border: none;
-    border-top: 1px solid #DEDEDE;
+    border-top: 1px solid #dedede;
     margin: auto 0 2rem;
   }
 
+  /* --- Actions --- */
   &__actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+  }
 
-    .product-card__quantity {
-      display: flex;
+  /* Quantity controls */
+  &__quantity {
+    display: flex;
+  }
 
-      .product-card__quantity-btn {
-        border: 1px solid gray;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-size: 1rem;
-        background-color: #E9ECF0;
-        line-height: 1;
-        padding: 0;
+  &__quantity-btn {
+    border: 1px solid gray;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: #e9ecf0;
+    line-height: 1;
+    padding: 0;
 
-        &--minus { margin-right: 0.25rem; }
-        &--plus { margin-left: 0.25rem; }
-      }
-
-      .product-card__quantity-input {
-        width: 2rem;
-        text-align: center;
-        border: 1px solid gray;
-        border-radius: 0.25rem;
-        font-size: 0.875rem;
-
-        /* Remove browser number arrows */
-        -moz-appearance: textfield;      // Firefox
-        -webkit-appearance: none;        // Chrome, Safari, Edge
-        appearance: none;
-
-        /* Remove WebKit spin buttons */
-        &::-webkit-inner-spin-button,
-        &::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-      }
+    &--minus {
+      margin-right: 0.25rem;
     }
 
-    .product-card__price {
-      font-weight: bold;
-      font-size: 1rem;
+    &--plus {
+      margin-left: 0.25rem;
     }
   }
 
-  .product-card__add-to-cart-btn {
+  &__quantity-input {
+    width: 2rem;
+    text-align: center;
+    border: 1px solid gray;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+
+    /* Remove browser number arrows */
+    -moz-appearance: textfield; // Firefox
+    -webkit-appearance: none;   // Chrome, Safari, Edge
+    appearance: none;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  /* Price */
+  &__price {
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+
+    &--compare {
+      text-decoration: line-through;
+      font-weight: normal;
+      font-size: 0.875rem;
+      color: #8f9296;
+    }
+
+    &--current {
+      color: $color-header-bg;
+    }
+  }
+
+  /* --- Add to Cart --- */
+  &__add-to-cart-btn {
     display: block;
     width: 100%;
     margin: 0 auto;
     text-align: center;
-    background: #1f3666;
-    color: #fff;
+    background: $color-header-bg;
+    color: $color-white;
     padding: 0.75rem 0;
     font-weight: 600;
     border-radius: 30px;
-    text-decoration: none;
     border: none;
     cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover,
+    &:focus {
+      background: $color-header-bg;
+    }
+
+    &:disabled,
+    &[aria-disabled='true'] {
+      background: #ccc;
+      cursor: not-allowed;
+    }
   }
 }

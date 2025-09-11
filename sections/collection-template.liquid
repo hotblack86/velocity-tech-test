@@ -3,43 +3,43 @@
   This version renders all products in the store (collections['all'])
 {% endcomment %}
 
-{% assign collection = collections['all'] %}
+{%- liquid
+  assign collection = collections['all']
 
-{% if collection != nil and collection.products.size > 0 %}
-{% assign count = 0 %}
-<section class="collection">
-  <div class="container">
+  assign loading = 'lazy'
+  if section.location == 'template' and section.index == 1
+    assign loading = 'eager'
+  endif
+-%}
 
-    <h2 class="collection__title">
-      {{ collection.title }}
-    </h2>
+{% if collection and collection.products_count > 0 %}
+  {% assign count = 0 %}
+  <section class="collection">
+    <div class="container">
+      <h2 class="collection__title">
+        {{ collection.title }}
+      </h2>
+      <div class="collection__wrapper">
+      {% for product in collection.products %}
+        {% if product.variants.size == 1 %}
 
-    <div class="collection__wrapper">
+          {%- if count == 1 -%}
+            {%- render 'product-card', product: product, promo: true, loading: loading -%}
+          {%- else -%}
+            {%- render 'product-card', product: product, loading: loading -%}
+          {%- endif -%}
 
-    {% for product in collection.products %}
-
-      {% if product.variants.size == 1 %}
-        
-        {% if count == 1 %}
-            {% render 'product-card', product: product, promo: true %}
-        {% else %}
-            {% render 'product-card', product: product %}
+          {% assign count = count | plus: 1 %}
+          {% if count == 4 %}
+            {% break %}
+          {% endif %}
         {% endif %}
-
-        {% assign count = count | plus: 1 %}
-        {% if count == 4 %}
-          {% break %}
-        {% endif %}
-
-      {% endif %}
-
-    {% endfor %}
-
+      {%- endfor -%}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% else %}
-<p class="collection__empty">No products available.</p>
+  <p class="collection__empty">No products available.</p>
 {% endif %}
 
 {% schema %}
@@ -48,3 +48,4 @@
   "settings": []
 }
 {% endschema %}
+

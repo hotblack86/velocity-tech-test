@@ -5,7 +5,7 @@
 .header {
   background: $color-header-bg;
   color: $color-white;
-  padding: $spacing-base $spacing-lg;
+  padding: 1rem 2rem;
 
   &__wrapper {
     display: flex;
@@ -24,7 +24,7 @@
 
   &__icons {
     display: flex;
-    gap: $spacing-md;
+    gap: 1.5rem;
     align-items: center;
   }
 
@@ -65,12 +65,12 @@
 .footer {
   background: $color-header-bg;
   color: $color-white;
-  padding: $spacing-base $spacing-lg;
+  padding: 1rem 2rem;
 
   &__wrapper {
     margin: 0 auto;
     display: grid;
-    gap: $spacing-lg;
+    gap: 2rem;
   }
 
   &__about { 
@@ -80,14 +80,14 @@
   &__bottom {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: $spacing-lg;
+    gap: 2rem;
   }
 
   &__logo {
     font-size: 1.5rem;
     font-weight: 400;
     letter-spacing: 20px;
-    margin-bottom: $spacing-sm;
+    margin-bottom: 0.75rem;
   }
 
   &__text {
