@@ -56,3 +56,77 @@ Note – you may be required to log in to access editing tools to find out css p
 ### Good Luck!
 
 If you run into any issues or have any questions, feel free to reach out to a.pearson@digital-velocity.co.uk
+
+---
+
+
+Thanks very much for the task! I return it to you with the information below. Do let me know if you have any questions.
+
+## Instructions
+
+**Clone the repository**  
+
+```bash
+git clone https://github.com/hotblack86/velocity-tech-test.git
+cd velocity-tech-test
+```
+
+**Install dependencies**  
+
+```bash
+npm install
+```
+
+**Build CSS**
+
+```bash
+npm run build:css
+```
+
+- Compiles scss/theme.scss into assets/theme.scss.liquid for Shopify
+
+**Watch CSS for development**
+
+```bash
+npm run watch:css
+```
+
+- Automatically rebuilds the CSS whenever changes are made to the SCSS
+- Keep this running while editing styles for live updates
+
+**Deploy to Shopify**
+
+After building the CSS, push the theme to your development store with:
+
+```bash
+shopify theme push --store=velocity-tech-test --password=shptka_ea1e90de841c7cdaeb2ce101dd28caa6
+```
+
+
+Or run a local Shopify dev server:
+
+```bash
+shopify theme dev --store=velocity-tech-test --password=shptka_ea1e90de841c7cdaeb2ce101dd28caa6 --theme=185643172177
+```
+
+
+## Notes
+- The cart drawer is implemented as a self-contained Web Component, making it reusable across different pages and products.
+
+- Dynamic cart updates: The cart content, totals, and header count update in real-time based on Shopify’s AJAX cart API.
+
+- Accessibility: The cart drawer uses aria-hidden and focus management for better screen reader support.
+
+- Mobile-friendly: Cart and product grids are fully responsive and scrollable on small devices.
+
+- SCSS architecture: Variables are used for colors, spacing, typography, and BEM naming conventions are followed for maintainable CSS.
+
+- Smooth UI transitions: Opening/closing the cart and button interactions have subtle animations for better UX.
+
+- Error handling: Cart API requests have try/catch blocks to gracefully handle network errors.
+
+- Optimized image handling: Product images are automatically resized via URL manipulation to reduce payload.
+
+- Development workflow: SCSS is compiled to Shopify Liquid assets and can be watched for live CSS updates.
+
+- CSS architecture: CSS variables are used for colors, typography, and BEM naming conventions are followed for maintainable CSS.
