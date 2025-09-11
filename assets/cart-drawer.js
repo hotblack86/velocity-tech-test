@@ -1,5 +1,5 @@
 class CartDrawer extends HTMLElement {
-  // ---------------- Private Fields ----------------
+  // ----- Private Fields ----
   #overlay;
   #cartIcon;
   #clearAllBtn;
@@ -33,17 +33,17 @@ class CartDrawer extends HTMLElement {
     this.#headerCartCount = document.querySelector('.header__cart-count');
     this.#emptyState = this.querySelector('.cart-drawer__empty');
 
-    // ---------------- Bind Events ----------------
+    // ---------------- Bind Events --------------------------------
     if (this.#overlay) this.#overlay.addEventListener('click', this.#closeHandler);
     if (this.#cartIcon) this.#cartIcon.addEventListener('click', this.#openHandler);
     if (this.#clearAllBtn) this.#clearAllBtn.addEventListener('click', this.#clearAllHandler);
     if (this.#itemsContainer) this.#itemsContainer.addEventListener('click', this.#handleCartItemAction);
 
-    // ---------------- Setup Collection & ATC ----------------
+    // ---- Setup Collection & ATC ----
     this.#setupCollectionQuantity();
     this.#setupAddToCartButton();
 
-    // ---------------- Initial Cart Load ----------------
+    // ---- Initial Cart Load ----
     this.refreshCart();
   }
 
